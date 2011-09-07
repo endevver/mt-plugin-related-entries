@@ -1,0 +1,7 @@
+id: RelatedEntries
+name: Related Entries
+description: This plugin will republish any and all entries related to the entry being saved/published.
+version: 0.9
+
+callbacks:
+  MT::Entry::post_save: $RelatedEntries::RelatedEntries::Callbacks::post_save
