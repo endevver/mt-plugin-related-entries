@@ -4,6 +4,7 @@ use strict;
 
 sub post_save {
     my ( $cb, $obj, $orig ) = @_;
+    return unless $obj->status == 2;
     my @tags = $obj->get_tags();
     my $terms = { name => \@tags };
     my $tags = [ MT->model('tag')->load($terms, {
@@ -25,6 +26,7 @@ sub post_save {
     my @obj_ids = map { $_->object_id } @ot_ids;
     my $iter = MT->model('entry')->load_iter({ id => \@obj_ids });
     while (my $e = $iter->()) {
+        next unless $e->status == 2;
         next if $e->id == $obj->id; # do not publish yourself!
         MT->rebuild_entry( Entry => $e, BuildDependencies => 0 );
     }
